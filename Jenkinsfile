@@ -1,25 +1,27 @@
 pipeline {
     agent any
+    parameters {
+        gitBranch(name: 'branch', type: 'string', defaultValue: 'dev', description: 'Branch to build')
+    }
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
         stage('Build') {
             when {
-                branch 'dev'
+                expression {
+                    params.branch == 'dev'
+                }
             }
             steps {
-                echo "its dev"
+                // Add build steps here
             }
         }
         stage('QA') {
             when {
-                branch 'qa'
+                expression {
+                    params.branch == 'qa'
+                }
             }
             steps {
-                echo "its in qa"
+                // Add QA steps here
             }
         }
     }
