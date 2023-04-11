@@ -11,7 +11,7 @@ pipeline {
                 }
             }
             steps {
-                // Add build steps here
+                echo "is dev"
             }
         }
         stage('QA') {
@@ -21,7 +21,7 @@ pipeline {
                 }
             }
             steps {
-                // Add QA steps here
+                echo "qa"
             }
         }
     }
