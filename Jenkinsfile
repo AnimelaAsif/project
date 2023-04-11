@@ -19,7 +19,7 @@ pipeline {
                 branch 'qa'
             }
             steps {
-                echo "its qa"
+                echo "its in qa"
             }
         }
     }
