@@ -1,22 +1,28 @@
 pipeline {
     agent any
-    options {
-        checkoutToSCM {
-            git {
-                remote {
-                    url 'https://github.com/AnimelaAsif/project.git'
-                }
-                branch 'dev'
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout(
+                    [
+                        $class: 'GitSCM',
+                        branches: [[name: '*/dev']],
+                        doGenerateSubmoduleConfigurations: false,
+                        extensions: [],
+                        submoduleCfg: [],
+                        userRemoteConfigs: [[
+                            url: 'https://github.com/AnimelaAsif/project.git'
+                        ]]
+                    ]
+                )
             }
         }
-    }
-    stages {
         stage('Dev') {
             when {
                 branch 'dev'
             }
             steps {
-                echo "changes seen in dev branch"
+                echo "checges done in dev branch"
             }
         }
     }
