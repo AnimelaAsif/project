@@ -1,27 +1,35 @@
 pipeline {
     agent any
     parameters {
-        gitParameter(name: 'branch', type: 'string', defaultValue: 'master', description: 'Branch to build')
+        choice(
+            name: 'ENVIRONMENT',
+            choices: ['dev', 'test', 'prod'],
+            description: 'Select the environment to deploy to'
+        )
     }
     stages {
-        stage('Build') {
+        stage('Dev') {
             when {
-                expression {
-                    params.branch == 'dev'
-                }
+                expression { params.ENVIRONMENT == 'dev' }
             }
             steps {
                 echo "you r in dev"
             }
         }
-        stage('QA') {
+        stage('qa') {
             when {
-                expression {
-                    params.branch == 'qa'
-                }
+                expression { params.ENVIRONMENT == 'qa' }
             }
             steps {
                 echo "you r in qa"
+            }
+        }
+        stage('Prod') {
+            when {
+                expression { params.ENVIRONMENT == 'prod' }
+            }
+            steps {
+                echo "you r in prod"
             }
         }
     }
