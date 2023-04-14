@@ -1,15 +1,5 @@
 pipeline {
     agent any
-    stages {
-        stage('Dev') {
-            when {
-                branch 'dev' 
-            }
-            steps {
-                echo "you r in dev"
-            }
-        }
-    }
     options {
         checkoutToSCM {
             git {
@@ -17,6 +7,16 @@ pipeline {
                     url 'https://github.com/AnimelaAsif/project.git'
                 }
                 branch 'dev'
+            }
+        }
+    }
+    stages {
+        stage('Dev') {
+            when {
+                branch 'dev'
+            }
+            steps {
+                echo "changes seen in dev branch"
             }
         }
     }
