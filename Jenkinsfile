@@ -19,7 +19,7 @@ pipeline {
           def branches = sh(returnStdout: true, script: 'git branch -r | grep -v \'\\^ \\*\\$\'').trim().split('\\n')
           for (branch in branches) {
             sh("git checkout -f ${branch}")
-            def changes = sh(returnStdout: true, script: 'git diff remotes/origin/${branch}').trim()
+            def changes = sh(returnStdout: true, script: 'git fetch origin ${branch} && git diff remotes/origin/${branch}').trim()
             if (changes) {
               echo "Changes made in branch: ${branch}"
             }
