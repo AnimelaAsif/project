@@ -1,31 +1,35 @@
 pipeline {
-  agent any
-  
-  stages {
-    stage('Git Checkout') {
-      steps {
-        checkout([$class: 'GitSCM',
-                  branches: [[name: '*/master']],
-                  doGenerateSubmoduleConfigurations: false,
-                  extensions: [[$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: true]],
-                  submoduleCfg: [],
-                  userRemoteConfigs: [[url: 'https://github.com/AnimelaAsif/project.git']]])
-      }
-    }
-    
-    stage('Check for changes') {
-      steps {
-        script {
-          def branches = sh(returnStdout: true, script: 'git branch -r | grep -v \'\\^ \\*\\$\'').trim().split('\\n')
-          for (branch in branches) {
-            sh("git checkout -f ${branch}")
-            def changes = sh(returnStdout: true, script: 'git fetch origin ${branch} && git diff remotes/origin/${branch}').trim()
-            if (changes) {
-              echo "Changes made in branch: ${branch}"
+    agent any
+
+    stages {
+        stage('Dev') {
+            when {
+                changeset "dev/**"
             }
-          }
+            steps {
+                echo "changes done in Dev"
+            }
         }
-      }
+
+        stage('QA') {
+            when {
+                not { changeset "dev/**" }
+                changeset "qa/**"
+            }
+            steps {
+                echo "changes done in QA"
+            }
+        }
+
+        stage('master') {
+            when {
+                not { changeset "dev/**" }
+                not { changeset "qa/**" }
+                changeset "master/**"
+            }
+            steps {
+                echo "changes done in MASTER"
+            }
+        }
     }
-  }
 }
