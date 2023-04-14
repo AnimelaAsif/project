@@ -23,7 +23,7 @@ pipeline {
                 script {
                     println("Branch name: ${env.BRANCH_NAME}")
                     println("When condition: ${env.when}")
-                 }
+                }
             }
             steps {
                 echo "changes done in dev branch"
