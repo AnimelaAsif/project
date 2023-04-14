@@ -20,9 +20,13 @@ pipeline {
         stage('Dev') {
             when {
                 branch 'dev'
+                script {
+                    println("Branch name: ${env.BRANCH_NAME}")
+                    println("When condition: ${env.when}")
+                 }
             }
             steps {
-                echo "checges done in dev branch"
+                echo "changes done in dev branch"
             }
         }
     }
