@@ -1,7 +1,7 @@
 pipeline {
     agent any
     parameters {
-        gitBranch(name: 'branch', type: 'string', defaultValue: 'dev', description: 'Branch to build')
+        gitBranch(name: 'branch', type: 'string', defaultValue: 'master', description: 'Branch to build')
     }
     stages {
         stage('Build') {
