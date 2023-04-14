@@ -16,7 +16,7 @@ pipeline {
     stage('Check for changes') {
       steps {
         script {
-          def branches = sh(returnStdout: true, script: 'git branch -r | grep -v \'^ \*$\'').trim().split('\\n')
+          def branches = sh(returnStdout: true, script: 'git branch -r | grep -v \'\\^ \\*\\$\'').trim().split('\\n')
           for (branch in branches) {
             sh("git checkout -f ${branch}")
             def changes = sh(returnStdout: true, script: 'git diff origin/${branch}').trim()
