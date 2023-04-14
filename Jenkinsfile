@@ -6,7 +6,7 @@ pipeline {
                 checkout(
                     [
                         $class: 'GitSCM',
-                        branches: [[name: '*/dev']],
+                        branches: [[name: '*/*']],
                         doGenerateSubmoduleConfigurations: false,
                         extensions: [],
                         submoduleCfg: [],
@@ -20,10 +20,6 @@ pipeline {
         stage('Dev') {
             when {
                 branch 'dev'
-                script {
-                    println("Branch name: ${env.BRANCH_NAME}")
-                    println("When condition: ${env.when}")
-                }
             }
             steps {
                 echo "changes done in dev branch"
