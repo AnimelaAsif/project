@@ -1,10 +1,9 @@
 pipeline {
     agent any
-
     stages {
         stage('Dev') {
             when {
-                changeset "dev/**"
+                changeset "dev"
             }
             steps {
                 echo "changes done in Dev"
@@ -13,8 +12,8 @@ pipeline {
 
         stage('QA') {
             when {
-                not { changeset "dev/**" }
-                changeset "qa/**"
+                not { changeset "dev" }
+                changeset "qa"
             }
             steps {
                 echo "changes done in QA"
@@ -23,9 +22,9 @@ pipeline {
 
         stage('master') {
             when {
-                not { changeset "dev/**" }
-                not { changeset "qa/**" }
-                changeset "master/**"
+                not { changeset "dev" }
+                not { changeset "qa" }
+                changeset "master"
             }
             steps {
                 echo "changes done in MASTER"
