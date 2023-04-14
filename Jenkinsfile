@@ -11,7 +11,7 @@ pipeline {
                 }
             }
             steps {
-                echo "is dev"
+                echo "you r in dev"
             }
         }
         stage('QA') {
@@ -21,7 +21,7 @@ pipeline {
                 }
             }
             steps {
-                echo "qa"
+                echo "you r in qa"
             }
         }
     }
