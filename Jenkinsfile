@@ -1,5 +1,5 @@
 node {
-    git url: 'https://github.com/your/repo.git'
+    git url: 'https://github.com/AnimelaAsif/project.git'
     def branch = env.BRANCH_NAME
 
     if (branch == 'master') {
