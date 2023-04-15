@@ -6,7 +6,7 @@ pipeline {
                 changeset "dev"
             }
             steps {
-                echo "changesdone in Dev"
+                echo "changes done in Dev"
             }
         }
 
