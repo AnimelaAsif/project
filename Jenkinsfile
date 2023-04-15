@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Dev') {
             when {
-                changeset "dev"
+                branch== "dev"
             }
             steps {
                 echo "changes done in Dev"
@@ -12,8 +12,8 @@ pipeline {
 
         stage('QA') {
             when {
-                not { changeset "dev" }
-                changeset "qa"
+                not { branch== "dev" }
+                branch== "qa"
             }
             steps {
                 echo "changes done in QA"
@@ -22,9 +22,9 @@ pipeline {
 
         stage('master') {
             when {
-                not { changeset "dev" }
-                not { changeset "qa" }
-                changeset "master"
+                not { branch== "dev" }
+                not { branch== "qa" }
+                branch== "master"
             }
             steps {
                 echo "changes done in MASTER"
