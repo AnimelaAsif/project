@@ -1,31 +1,32 @@
-pipeline {
-    agent any
-    stages {
-        stage('Dev') {
-            when {
-                branch == "dev"
-            }
-            steps {
-                echo "changes done in Dev"
-            }
-        }
+node {
+    git url: 'https://github.com/your/repo.git'
+    def branch = env.BRANCH_NAME
 
-        stage('QA') {
-            when {
-                branch == "qa"
+    if (branch == 'master') {
+        if (git branch: 'master', diffFilter: 'd', quiet: true) {
+            stage('Build and deploy dev') {
+                echo"Build to deploy the code for master"
             }
-            steps {
-                echo "changes done in QA"
-            }
+        } else {
+            echo "master is idle"
         }
-
-        stage('master') {
-            when {
-                branch == "master"
+    } else if (branch == 'dev') {
+        if (git branch: 'dev', diffFilter: 'd', quiet: true) {
+            stage('Build and deploy dev') {
+                echo"Build and deploy the code for dev"
             }
-            steps {
-                echo "changes done in MASTER"
-            }
+        } else {
+            echo "dev is idle"
         }
+    } else if (branch == 'qa') {
+        if (git branch: 'qa', diffFilter: 'd', quiet: true) {
+            stage('Build and deploy qa') {
+                echo"Build and deploy the code for qa"
+            }
+        } else {
+            echo "qa is idle"
+        }
+    } else {
+        echo "This branch is not configured for deployment"
     }
 }
