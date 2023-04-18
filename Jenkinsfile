@@ -15,7 +15,7 @@ pipeline {
                 }
             }
             steps {
-                // Build and test commands go here
+                echo "dev"
             }
         }
     }
