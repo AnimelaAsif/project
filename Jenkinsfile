@@ -1,6 +1,21 @@
 pipeline {
     agent any
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Extract Revision') {
+            steps {
+                script {
+                    def output = sh(returnStdout: true, script: 'git rev-parse HEAD')
+                    def revision = output.trim().tokenize().last()
+                    echo "Last word of checkout revision: ${revision}"
+                }
+            }
+        }
         stage('Dev') {
             when {
                 changeset "origin/dev"
