@@ -1,28 +1,27 @@
 pipeline {
-  agent any
-  stages {
-    stage('Print branch name') {
-      steps {
-        echo "The current branch is ${env.BRANCH_NAME}"
-      }
-    }
-    stage('Perform action based on branch name') {
-      when {
-        expression { env.BRANCH_NAME == 'origin/master' }
-      }
-      steps {
-        echo "Performing action for master branch"
-      }
-    }
-    stage('Perform another action based on branch name') {
-      when {
-        anyOf {
-          expression { env.BRANCH_NAME == 'origin/dev' }
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/dev']],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [[$class: 'CleanCheckout']],
+                    submoduleCfg: [],
+                    userRemoteConfigs: [[url: 'https://github.com/AnimelaAsif/project.git']]
+                ])
+            }
         }
-      }
-      steps {
-        echo "Performing action for dev or qa branch"
-      }
+        
+        stage('Build and Test') {
+            when {
+                changeset "*/dev"
+            }
+            steps {
+                echo "changes made in dev branch"
+            }
+        }
     }
-  }
 }
