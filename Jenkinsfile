@@ -4,23 +4,18 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: '*/dev']],
-                    doGenerateSubmoduleConfigurations: false,
-                    extensions: [[$class: 'CleanCheckout']],
-                    submoduleCfg: [],
-                    userRemoteConfigs: [[url: 'https://github.com/AnimelaAsif/project.git']]
-                ])
+                checkout([$class: 'GitSCM', branches: [[name: '*/dev']], userRemoteConfigs: [[url: 'https://github.com/AnimelaAsif/project.git']]])
             }
         }
         
         stage('Build and Test') {
             when {
-                changeset "*/dev"
+                expression { 
+                    return env.BRANCH_NAME == 'dev'
+                }
             }
             steps {
-                echo "changes made in dev branch"
+                // Build and test commands go here
             }
         }
     }
