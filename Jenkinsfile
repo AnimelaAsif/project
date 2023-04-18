@@ -1,32 +1,25 @@
-node {
-    git url: 'https://github.com/AnimelaAsif/project.git'
-    def branch = env.BRANCH_NAME
+pipeline {
+    agent any
 
-    if (branch == 'master') {
-        if (git branch: 'master', diffFilter: 'd', quiet: true) {
-            stage('Build and deploy dev') {
-                echo"Build to deploy the code for master"
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM',
+                          branches: [[name: '*/master']],
+                          doGenerateSubmoduleConfigurations: false,
+                          extensions: [[$class: 'RelativeTargetDirectory',
+                                        relativeTargetDir: 'project']],
+                          submoduleCfg: [],
+                          userRemoteConfigs: [[url: 'https://github.com/AnimelaAsif/project.git']]])
             }
-        } else {
-            echo "master is idle"
         }
-    } else if (branch == 'dev') {
-        if (git branch: 'dev', diffFilter: 'd', quiet: true) {
-            stage('Build and deploy dev') {
-                echo"Build and deploy the code for dev"
+        stage('Print branch') {
+            steps {
+                script {
+                    def branchName = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+                    echo "Changes were made on branch ${branchName}"
+                }
             }
-        } else {
-            echo "dev is idle"
         }
-    } else if (branch == 'qa') {
-        if (git branch: 'qa', diffFilter: 'd', quiet: true) {
-            stage('Build and deploy qa') {
-                echo"Build and deploy the code for qa"
-            }
-        } else {
-            echo "qa is idle"
-        }
-    } else {
-        echo "This branch is not configured for deployment"
     }
 }
