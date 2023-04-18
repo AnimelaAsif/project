@@ -10,9 +10,9 @@ pipeline {
         
         stage('Build and Test') {
             when {
-                anyOf {
-                    branch "dev"
-                    changeset "*/dev"
+                expression {
+                    def branches = currentBuild.changeSets.collect { it.branches }.flatten().unique()
+                    return branches.size() == 1 && branches[0].name == 'dev'
                 }
             }
             steps {
