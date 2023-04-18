@@ -6,7 +6,10 @@ pipeline {
                 changeset "origin/dev"
             }
             steps {
-                echo "changes done in Dev"
+                script {
+                    def branchName = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+                    echo "Changes were made on branch ${branchName}"
+                }
             }
         }
         
@@ -16,7 +19,10 @@ pipeline {
                 changeset "origin/qa"
             }
             steps {
-                echo "changes done in QA"
+                script {
+                    def branchName = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+                    echo "Changes were made on branch ${branchName}"
+                }
             }
         }
 
@@ -27,7 +33,10 @@ pipeline {
                 changeset "origin/master"
             }
             steps {
-                echo "changes done in MASTER"
+                script {
+                    def branchName = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+                    echo "Changes were made on branch ${branchName}"
+                }
             }
         }
     }
