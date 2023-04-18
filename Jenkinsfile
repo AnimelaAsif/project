@@ -10,8 +10,8 @@ pipeline {
         
         stage('Build and Test') {
             when {
-                expression { 
-                    return env.BRANCH_NAME == 'dev'
+                expression {
+                    return env.CHANGE_BRANCH == 'dev' || env.BRANCH_NAME == 'dev'
                 }
             }
             steps {
