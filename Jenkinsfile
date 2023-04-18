@@ -1,42 +1,33 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-        
         stage('Dev') {
             when {
-                branch== "origin/dev"
+                changeset "origin/dev"
             }
             steps {
-                echo "Changes were made in Dev"
+                echo "changes done in Dev"
             }
         }
         
         stage('QA') {
             when {
-                branch/= "origin/dev"
-                branch== "origin/qa"
+                not { changeset "origin/dev" }
+                changeset "origin/qa"
             }
             steps {
-                echo "Changes were made in QA"
+                echo "changes done in QA"
             }
         }
 
         stage('master') {
             when {
-                branch/= "origin/dev"
-                branch/= "origin/qa"
-                branch== "origin/master"
+                not { changeset "origin/dev" }
+                not { changeset "origin/qa" }
+                changeset "origin/master"
             }
             steps {
-                script {
-                    sh 'git branch'
-                    echo "Changes were made in Master"
-                }
+                echo "changes done in MASTER"
             }
         }
     }
