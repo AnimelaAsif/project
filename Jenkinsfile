@@ -4,15 +4,9 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
-            }
-        }
-        
-        stage('Extract Revision') {
-            steps {
                 script {
-                    def output = sh(returnStdout: true, script: 'git rev-parse HEAD')
-                    def revision = output.trim().tokenize().last()
-                    echo "Last word of checkout revision: ${revision}"
+                    def revision = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
+                    echo "Checked out revision: (${revision})"
                 }
             }
         }
