@@ -10,10 +10,8 @@ pipeline {
         
         stage('Build and Test') {
             when {
-                allOf {
-                    expression {
-                        return env.BRANCH_NAME == 'dev'
-                    }
+                anyOf {
+                    branch "dev"
                     changeset "*/dev"
                 }
             }
