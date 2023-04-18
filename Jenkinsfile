@@ -9,7 +9,7 @@ pipeline {
         
         stage('Dev') {
             when {
-                changeset "origin/dev"
+                branch== "origin/dev"
             }
             steps {
                 echo "Changes were made in Dev"
@@ -18,8 +18,8 @@ pipeline {
         
         stage('QA') {
             when {
-                not { changeset "origin/dev" }
-                changeset "origin/qa"
+                branch/= "origin/dev"
+                branch== "origin/qa"
             }
             steps {
                 echo "Changes were made in QA"
@@ -28,9 +28,9 @@ pipeline {
 
         stage('master') {
             when {
-                not { changeset "origin/dev" }
-                not { changeset "origin/qa" }
-                changeset "origin/master"
+                branch/= "origin/dev"
+                branch/= "origin/qa"
+                branch== "origin/master"
             }
             steps {
                 script {
