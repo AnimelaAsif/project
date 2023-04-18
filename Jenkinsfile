@@ -1,24 +1,33 @@
 pipeline {
     agent any
-
     stages {
-        stage('Checkout') {
+        stage('Dev') {
+            when {
+                changeset "origin/dev"
+            }
             steps {
-                checkout([$class: 'GitSCM',
-                          branches: [[name: '*/master']],
-                          doGenerateSubmoduleConfigurations: false,
-                          extensions: [[$class: 'RelativeTargetDirectory',
-                                        relativeTargetDir: 'project']],
-                          submoduleCfg: [],
-                          userRemoteConfigs: [[url: 'https://github.com/AnimelaAsif/project.git']]])
+                echo "changes done in Dev"
             }
         }
-        stage('Print branch') {
+        
+        stage('QA') {
+            when {
+                not { changeset "origin/dev" }
+                changeset "origin/qa"
+            }
             steps {
-                script {
-                    def branchName = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-                    echo "Changes were made on branch ${branchName}"
-                }
+                echo "changes done in QA"
+            }
+        }
+
+        stage('master') {
+            when {
+                not { changeset "origin/dev" }
+                not { changeset "origin/qa" }
+                changeset "origin/master"
+            }
+            steps {
+                echo "changes done in MASTER"
             }
         }
     }
