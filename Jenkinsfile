@@ -8,7 +8,7 @@ pipeline {
     }
     stage('Perform action based on branch name') {
       when {
-        expression { env.BRANCH_NAME == 'master' }
+        expression { env.BRANCH_NAME == 'origin/master' }
       }
       steps {
         echo "Performing action for master branch"
@@ -17,8 +17,7 @@ pipeline {
     stage('Perform another action based on branch name') {
       when {
         anyOf {
-          expression { env.BRANCH_NAME == 'dev' }
-          expression { env.BRANCH_NAME == 'qa' }
+          expression { env.BRANCH_NAME == 'origin/dev' }
         }
       }
       steps {
