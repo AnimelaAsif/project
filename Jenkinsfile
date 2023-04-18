@@ -1,25 +1,29 @@
 pipeline {
-    agent any
-
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout([$class: 'GitSCM',
-                          branches: [[name: "${env.BRANCH_NAME}"]],
-                          doGenerateSubmoduleConfigurations: false,
-                          extensions: [[$class: 'RelativeTargetDirectory',
-                                        relativeTargetDir: 'project']],
-                          submoduleCfg: [],
-                          userRemoteConfigs: [[url: 'https://github.com/AnimelaAsif/project.git']]])
-            }
-        }
-        stage('Print branch') {
-            steps {
-                script {
-                    def branchName = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-                    echo "Changes were made on branch ${branchName}"
-                }
-            }
-        }
+  agent any
+  stages {
+    stage('Print branch name') {
+      steps {
+        echo "The current branch is ${env.BRANCH_NAME}"
+      }
     }
+    stage('Perform action based on branch name') {
+      when {
+        expression { env.BRANCH_NAME == 'master' }
+      }
+      steps {
+        echo "Performing action for master branch"
+      }
+    }
+    stage('Perform another action based on branch name') {
+      when {
+        anyOf {
+          expression { env.BRANCH_NAME == 'dev' }
+          expression { env.BRANCH_NAME == 'qa' }
+        }
+      }
+      steps {
+        echo "Performing action for dev or qa branch"
+      }
+    }
+  }
 }
