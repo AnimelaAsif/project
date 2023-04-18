@@ -1,17 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
-            steps {
-                checkout([$class: 'GitSCM',
-                          branches: [[name: "${env.BRANCH_NAME}"]],
-                          doGenerateSubmoduleConfigurations: false,
-                          extensions: [[$class: 'RelativeTargetDirectory',
-                                        relativeTargetDir: 'project']],
-                          submoduleCfg: [],
-                          userRemoteConfigs: [[url: 'https://github.com/AnimelaAsif/project.git']]])
-            }
-        }
         stage('Dev') {
             when {
                 changeset "origin/dev"
