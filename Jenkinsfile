@@ -1,22 +1,21 @@
 pipeline {
     agent any
-    
     stages {
         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/dev']], userRemoteConfigs: [[url: 'https://github.com/AnimelaAsif/project.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/*']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/AnimelaAsif/project.git']]])
             }
         }
-        
-        stage('Build and Test') {
-            when {
-                expression {
-                    def branches = currentBuild.changeSets.collect { it.branches }.flatten().unique()
-                    return branches.size() == 1 && branches[0].name == 'dev'
-                }
-            }
+        stage('Check Branch') {
             steps {
-                echo "dev"
+                script {
+                    def branchName = env.GIT_BRANCH
+                    if (branchName == null || branchName == '') {
+                        echo "Unable to determine branch name"
+                        return
+                    }
+                    echo "Changes were made on branch ${branchName}"
+                }
             }
         }
     }
