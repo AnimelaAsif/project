@@ -13,14 +13,12 @@ pipeline {
                     if (branchName == null || branchName == '') {
                         echo "Unable to determine branch name"
                         return
-                    }
-                    if (branchName.startsWith('origin/dev')) {
+                    } if (branchName.startsWith('origin/dev')) {
                         echo "changes made on dev branch"
                         stage('dev') {
                             echo "steps to exectue in dev"
                         }
-                    }
-                    else if (branchName.startsWith('origin/qa')) {
+                    } else if (branchName.startsWith('origin/qa')) {
                         echo "changes made on dev branch"
                         stage('qa') {
                             echo "steps to exectue in qa"
