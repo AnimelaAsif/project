@@ -5,6 +5,8 @@ pipeline {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/*']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/AnimelaAsif/project.git']]])
             }
+        }
+        stage('branch check'){    
             steps {
                 script {
                     def branchName = env.GIT_BRANCH
