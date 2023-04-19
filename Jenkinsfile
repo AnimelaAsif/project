@@ -6,29 +6,29 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: '*/*']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/AnimelaAsif/project.git']]])
             }
         }
-        stage('branch check'){    
+        stage('Check Branch') {
             steps {
                 script {
                     def branchName = env.GIT_BRANCH
                     if (branchName == null || branchName == '') {
                         echo "Unable to determine branch name"
                         return
-                    } if (branchName.startsWith('origin/dev')) {
-                        echo "changes made on dev branch"
+                    }
+                    if (branchName.startsWith('origin/dev')) {
+                        echo "Changes were made on the dev branch"
                         stage('dev') {
-                            echo "steps to exectue in dev"
+                            echo "changes made on dev branch"
                         }
                     } else if (branchName.startsWith('origin/qa')) {
-                        echo "changes made on dev branch"
+                        echo "Changes were made on the qa branch"
                         stage('qa') {
-                            echo "steps to exectue in qa"
+                            echo "changes made on qa branch"
                         }
-                    } 
-                    else {
-                        echo "cheanges were made on unknown branch: ${branchName}"
-                    } 
+                    } else {
+                        echo "Changes were made on an unknown branch: ${branchName}"
+                    }
                 }
             }
-        }    
+        }
     }
 }
