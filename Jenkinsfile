@@ -9,7 +9,7 @@ pipeline {
         stage('Check Branch') {
             steps {
                 script {
-                    def branchName = env.BRANCH_NAME
+                    def branchName = env.GIT_BRANCH
                     if (branchName == null || branchName == '') {
                         echo "Unable to determine branch name"
                         return
