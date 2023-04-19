@@ -14,7 +14,19 @@ pipeline {
                         echo "Unable to determine branch name"
                         return
                     }
-                    echo "Changes were made on branch ${branchName}"
+                    if (branchName.startsWith('origin/dev')) {
+                        echo "Changes were made on the dev branch"
+                        stage('dev') {
+                            echo "changes made on dev branch"
+                        }
+                    } else if (branchName.startsWith('origin/qa')) {
+                        echo "Changes were made on the qa branch"
+                        stage('qa') {
+                            echo "changes made on qa branch"
+                        }
+                    } else {
+                        echo "Changes were made on an unknown branch: ${branchName}"
+                    }
                 }
             }
         }
