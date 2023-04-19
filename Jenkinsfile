@@ -5,8 +5,6 @@ pipeline {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/*']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/AnimelaAsif/project.git']]])
             }
-        }
-        stage('Check Branch') {
             steps {
                 script {
                     def branchName = env.GIT_BRANCH
@@ -17,6 +15,6 @@ pipeline {
                     echo "Changes were made on branch ${branchName}"
                 }
             }
-        }
+        }    
     }
 }
